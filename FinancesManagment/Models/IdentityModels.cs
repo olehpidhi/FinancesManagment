@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 
 namespace FinancesManagment.Models
 {
@@ -16,6 +17,9 @@ namespace FinancesManagment.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        public string Name { get; set; }
+        public string Surname { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
@@ -29,5 +33,7 @@ namespace FinancesManagment.Models
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<FinancialAccount> FinancialAccounts { get; set; }
     }
 }
