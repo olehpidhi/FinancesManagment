@@ -11,16 +11,12 @@ namespace FinancesManagment.Controllers
     public class FinancialAccountController : Controller
     {
 
-        private IFinancialAccountRepository financialAccountsRepository;
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
-        public FinancialAccountController()
-        {
-            this.financialAccountsRepository = new FinancialAccountsRepository(ApplicationDbContext.Create());
-        }
         // GET: FinancialAccount
         public ActionResult Index()
         {
-            return View();
+            return View(unitOfWork.FinancialAccountsRepository.Get());
         }
 
         public ActionResult Create()
@@ -34,8 +30,8 @@ namespace FinancesManagment.Controllers
             FinancialAccount newAccount = new FinancialAccount();
             newAccount.Name = Name;
             newAccount.Summary = 0;
-            financialAccountsRepository.AddFinancialAccount(newAccount);
-            int objectsAdded = financialAccountsRepository.Save();
+            unitOfWork.FinancialAccountsRepository.Insert(newAccount);
+            int objectsAdded = unitOfWork.Save();
             if (objectsAdded > 0)
             {
                 return Json(new { status = "Finacial account added successfully." });
