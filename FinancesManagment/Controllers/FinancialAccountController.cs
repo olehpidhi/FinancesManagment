@@ -35,8 +35,12 @@ namespace FinancesManagment.Controllers
             newAccount.Name = Name;
             newAccount.Summary = 0;
             financialAccountsRepository.AddFinancialAccount(newAccount);
-            financialAccountsRepository.Save();
-
+            int objectsAdded = financialAccountsRepository.Save();
+            if (objectsAdded > 0)
+            {
+                return Json(new { status = "Finacial account added successfully." });
+            }
+            return Json(new { status = "Failed to add financial account" });
         }
     }
 }

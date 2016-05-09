@@ -13,6 +13,6 @@ namespace FinancesManagment.DAL
         void AddFinancialAccount(FinancialAccount account);
         void DeleteFinancialAccount(int id);
         void UpdateFinancialAccount(FinancialAccount account);
-        void Save();
+        int Save();
     }
 }
