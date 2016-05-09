@@ -199,6 +199,8 @@
     <Compile Include="Controllers\FinancialAccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="DAL\FinancialAccountsRepository.cs" />
+    <Compile Include="DAL\IFinancialAccountRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
