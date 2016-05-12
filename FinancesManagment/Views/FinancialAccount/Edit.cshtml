@@ -83,13 +83,15 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FinancialAccountRole.Title)
             </td>
-            <td>quote</td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quote)
+            </td>
             <td>
                 <div class="btn-group">
                     @if (item.FinancialAccountRole.Title != "Owner")
                     {
                         <button class="btn btn-info">Edit permissions</button>
-                        <button class="btn btn-info">Set Quote</button>
+                        @Html.ActionLink("Set Quote", "SetQuote", new { Id = item.Id, Quote = item.Quote }, new { @class="btn btn-info" })
                         <button class="btn btn-danger" onclick="onRemove(@item.Id)">Remove</button>
                     }
                 </div>
@@ -116,10 +118,6 @@
                 $("#result").show();
             }
         });
-    }
-
-    function redirect(url) {
-        window.location.href = url;
     }
 </script>
 

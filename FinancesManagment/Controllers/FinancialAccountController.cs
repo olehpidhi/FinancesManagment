@@ -125,6 +125,29 @@ namespace FinancesManagment.Controllers
             return View(member);
         }
 
+        public ActionResult SetQuote(int Id)
+        {
+            FinancialAccountMember member = unitOfWork.FinancialAccountMembersRepository.GetByID(Id);
+            return View(member);
+        }
+
+        [HttpPost]
+        public ActionResult SetQuote(int Id, decimal Quote)
+        {
+            FinancialAccountMember member = unitOfWork.FinancialAccountMembersRepository.GetByID(Id);
+            member.Quote = Quote;
+            unitOfWork.FinancialAccountMembersRepository.Update(member);
+            int updatedObjects = unitOfWork.Save();
+            if (updatedObjects > 0)
+            {
+                return RedirectToAction("Edit", new { Id = member.FinancialAccount.Id });
+            }
+            else
+            {
+                ViewBag.Message = "Failed to change the quote";
+                return View(member);
+            }
+        }
         public string MakeTransaction(int Id)
         {
             return "Make transaction page";
