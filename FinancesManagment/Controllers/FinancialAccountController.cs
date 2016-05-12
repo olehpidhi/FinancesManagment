@@ -38,9 +38,14 @@ namespace FinancesManagment.Controllers
             FinancialAccountRole ownerRole = unitOfWork.FinancialAccountRolesRepository.Get(r => r.Title == "Owner").FirstOrDefault();
             FinancialAccountMember newMember = new FinancialAccountMember();
             var userId = User.Identity.GetUserId();
+
+            ApplicationUser user = unitOfWork.UserRepository.GetByID(userId);
+
             newMember.FinancialAccountId = newAccount.Id;
             newMember.FinancialAccountRoleId = ownerRole.Id;
             newMember.ApplicationUserId = userId;
+            newMember.ApplicationUser = user;
+            
             unitOfWork.FinancialAccountMembersRepository.Insert(newMember);
             objectsAdded += unitOfWork.Save();
             if (objectsAdded == 2)
@@ -54,6 +59,7 @@ namespace FinancesManagment.Controllers
         public ActionResult Edit(int id)
         {
             FinancialAccount account = unitOfWork.FinancialAccountsRepository.GetByID(id);
+            var members = Queries.GetAccountMembers(account).ToList();
             return View(account);
         } 
     }
