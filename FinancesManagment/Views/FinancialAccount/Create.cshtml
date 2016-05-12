@@ -4,45 +4,35 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<h2>Create new account</h2>
 
-
+@using (Html.BeginForm("Create", "FinancialAccount", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
 @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h4>FinancialAccount</h4>
-    <hr />
-    <div class="form-group">
-        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
         </div>
     </div>
+}
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <button class="btn btn-success" onclick="createFinancialAccount()">Create</button>
-        </div>
+@if (ViewBag.Message != null)
+{
+    <div id="result" class="alert alert-info form-group">
+        @ViewBag.Message
     </div>
-</div>
-<div id="result" class="alert alert-info form-group" hidden>
-    <a href="#" class="close" aria-label="close" onclick="$('#result').hide()">&times;</a>
-</div>
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
-<script type="text/javascript">
-    function createFinancialAccount() {
-        var data = {Name: $("#Name").val()}
-        console.log(data);
-        $.post("@Url.Action("Create")", data, function (data) {
-            $("#result").text(data.status);
-            $("#result").show();
-        });
-    }
-</script>
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
