@@ -7,7 +7,9 @@ namespace FinancesManagment.DAL
     {
         private ApplicationDbContext context = ApplicationDbContext.Create();
         private GenericRepository<FinancialAccount> financialAccountRepository;
-
+        private GenericRepository<FinancialAccountMember> financialAccountMemberRepository;
+        private GenericRepository<FinancialAccountRole> financialAccountRoleRepository;
+    
         public GenericRepository<FinancialAccount> FinancialAccountsRepository
         {
             get
@@ -18,6 +20,32 @@ namespace FinancesManagment.DAL
                     this.financialAccountRepository = new GenericRepository<FinancialAccount>(context);
                 }
                 return financialAccountRepository;
+            }
+        }
+
+        public GenericRepository<FinancialAccountMember> FinancialAccountMembersRepository
+        {
+            get
+            {
+
+                if (this.financialAccountMemberRepository == null)
+                {
+                    this.financialAccountMemberRepository = new GenericRepository<FinancialAccountMember>(context);
+                }
+                return financialAccountMemberRepository;
+            }
+        }
+
+        public GenericRepository<FinancialAccountRole> FinancialAccountRolesRepository
+        {
+            get
+            {
+
+                if (this.financialAccountRoleRepository == null)
+                {
+                    this.financialAccountRoleRepository = new GenericRepository<FinancialAccountRole>(context);
+                }
+                return financialAccountRoleRepository;
             }
         }
 

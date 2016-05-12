@@ -12,6 +12,7 @@ namespace FinancesManagment.Migrations
             AutomaticMigrationsEnabled = true;
             ContextKey = "FinancesManagment.Models.ApplicationDbContext";
             AutomaticMigrationDataLossAllowed = true;
+            
         }
 
         protected override void Seed(FinancesManagment.Models.ApplicationDbContext context)
