@@ -10,6 +10,7 @@ namespace FinancesManagment.Controllers
     {
         public ActionResult Index()
         {
+            
             return View();
         }
 

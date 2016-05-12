@@ -9,7 +9,7 @@ namespace FinancesManagment.DAL
         private GenericRepository<FinancialAccount> financialAccountRepository;
         private GenericRepository<FinancialAccountMember> financialAccountMemberRepository;
         private GenericRepository<FinancialAccountRole> financialAccountRoleRepository;
-    
+
         public GenericRepository<FinancialAccount> FinancialAccountsRepository
         {
             get
