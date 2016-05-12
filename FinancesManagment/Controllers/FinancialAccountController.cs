@@ -45,24 +45,16 @@ namespace FinancesManagment.Controllers
             objectsAdded += unitOfWork.Save();
             if (objectsAdded == 2)
             {
-                return Json(new { status = "Finacial account added successfully." });
+                return RedirectToAction("Edit",new { Id = newAccount.Id });
             }
-            return Json(new { status = "Failed to add financial account" });
+            ViewBag.Message = "Failed to creare account";
+            return View();
         }
 
-        public string AddUser()
+        public ActionResult Edit(int id)
         {
-            FinancialAccountMember m = new FinancialAccountMember();
-            //FinancialAccount newAccount = unitOfWork.FinancialAccountsRepository.GetByID(1);
-            //FinancialAccountRole ownerRole = unitOfWork.FinancialAccountRolesRepository.GetByID(1);
-            m.FinancialAccountId = 1;
-            m.FinancialAccountRoleId = 1;
-            var userId = User.Identity.GetUserId();
-            var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            m.ApplicationUserId = userId;
-            unitOfWork.FinancialAccountMembersRepository.Insert(m);
-            unitOfWork.Save();
-            return "success";
+            FinancialAccount account = unitOfWork.FinancialAccountsRepository.GetByID(id);
+            return View(account);
         } 
     }
 }
