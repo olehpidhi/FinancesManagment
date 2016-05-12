@@ -10,6 +10,9 @@ namespace FinancesManagment.DAL
         private GenericRepository<FinancialAccountMember> financialAccountMemberRepository;
         private GenericRepository<FinancialAccountRole> financialAccountRoleRepository;
         private GenericRepository<ApplicationUser> userRepository;
+        private GenericRepository<Permission> permissionRepository;
+        private GenericRepository<MemberPermission> memberPermissionRepository;
+        private GenericRepository<Transaction> transactionRepository;
 
         public GenericRepository<ApplicationUser> UserRepository
         {
@@ -21,6 +24,45 @@ namespace FinancesManagment.DAL
                     this.userRepository = new GenericRepository<ApplicationUser>(context);
                 }
                 return userRepository;
+            }
+        }
+
+        public GenericRepository<Transaction> TransactionsRepository
+        {
+            get
+            {
+
+                if (this.transactionRepository == null)
+                {
+                    this.transactionRepository = new GenericRepository<Transaction>(context);
+                }
+                return transactionRepository;
+            }
+        }
+
+        public GenericRepository<Permission> PermissionsRepository
+        {
+            get
+            {
+
+                if (this.permissionRepository == null)
+                {
+                    this.permissionRepository = new GenericRepository<Permission>(context);
+                }
+                return permissionRepository;
+            }
+        }
+
+        public GenericRepository<MemberPermission> MemberPermissionsRepository
+        {
+            get
+            {
+
+                if (this.memberPermissionRepository == null)
+                {
+                    this.memberPermissionRepository = new GenericRepository<MemberPermission>(context);
+                }
+                return memberPermissionRepository;
             }
         }
 
