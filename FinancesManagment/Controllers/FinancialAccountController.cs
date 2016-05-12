@@ -87,12 +87,45 @@ namespace FinancesManagment.Controllers
             }
         }
 
-        public string AddUser()
+        public ActionResult AddUser(int Id)
         {
-            return "Add user page";
+            FinancialAccount account = unitOfWork.FinancialAccountsRepository.GetByID(Id);
+            FinancialAccountMember member = new FinancialAccountMember();
+            member.FinancialAccount = account;
+            return View(member);
         }
 
-        public string MakeTransaction()
+        [HttpPost]
+        public ActionResult AddUser(int Id, int Role, string Email)
+        {
+            FinancialAccount account = unitOfWork.FinancialAccountsRepository.GetByID(Id);
+            FinancialAccountRole role = unitOfWork.FinancialAccountRolesRepository.GetByID(Role);
+            ApplicationUser user = unitOfWork.UserRepository.Get(u => u.Email == Email).FirstOrDefault();
+            FinancialAccountMember member = new FinancialAccountMember();
+            member.FinancialAccount = account;
+            if (user == null)
+            {
+                ViewBag.Message = "There is no such user";
+                return View(member);
+            }
+            if (unitOfWork.FinancialAccountMembersRepository.Get(m => m.FinancialAccount.Id == account.Id && m.ApplicationUser.Id == user.Id).FirstOrDefault() != null)
+            {
+                ViewBag.Message = "User is a member of account already.";
+                return View(member);
+            }
+            member.FinancialAccountRole = role;
+            member.ApplicationUser = user;
+            unitOfWork.FinancialAccountMembersRepository.Insert(member);
+            int savedMembers = unitOfWork.Save();
+            if (savedMembers > 0)
+            {
+                return RedirectToAction("Edit", new { Id = account.Id });
+            }
+            ViewBag.Message = string.Format("Failed to add {1}", user.Email);
+            return View(member);
+        }
+
+        public string MakeTransaction(int Id)
         {
             return "Make transaction page";
         }

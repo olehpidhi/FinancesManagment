@@ -272,6 +272,7 @@
     <Content Include="Views\FinancialAccount\Create.cshtml" />
     <Content Include="Views\FinancialAccount\Index.cshtml" />
     <Content Include="Views\FinancialAccount\Edit.cshtml" />
+    <Content Include="Views\FinancialAccount\AddUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

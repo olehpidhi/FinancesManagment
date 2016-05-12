@@ -15,5 +15,19 @@ namespace FinancesManagment.Models
         public virtual FinancialAccount FinancialAccount { get; set; }
         public int FinancialAccountRoleId { get; set; }
         public virtual FinancialAccountRole FinancialAccountRole { get; set; }
+
+        public static IEnumerable<FinancialAccountRole> Roles = new List<FinancialAccountRole>
+        {
+            new FinancialAccountRole
+            {
+                Id = 2,
+                Title = "User"
+            },
+            new FinancialAccountRole
+            {
+                Id = 3,
+                Title = "Analyst"
+            }
+        };
     }
 }

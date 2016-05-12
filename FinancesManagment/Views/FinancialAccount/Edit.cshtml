@@ -40,8 +40,8 @@
 }
 <div class="form-group btn-group">
     <button class="btn btn-primary" onclick="$('#editform').submit()">Save</button>
-    <button class="btn btn-primary" onclick="redirect('/FinancialAccount/MakeTransaction')">Make transaction</button>
-    <button class="btn btn-primary" onclick="redirect('/FinancialAccount/AddUser')">Add user</button>
+    <button class="btn btn-primary" onclick="window.location.href='@Url.Action("MakeTransaction", "FinancialAccount", new { Id = Model.Id })'">Make transaction</button>
+    <button class="btn btn-primary" onclick="window.location.href='@Url.Action("AddUser", "FinancialAccount", new { Id = Model.Id })'">Add user</button>
 </div>
 
 <div id="result" class="alert alert-info form-group" hidden>
