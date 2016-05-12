@@ -29,6 +29,25 @@ namespace FinancesManagment.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+            context.FinancialAccountRoles.AddOrUpdate(
+                role => role.Id,
+                new Models.FinancialAccountRole
+                {
+                    Id = 1,
+                    Title = "Owner"
+                },
+                new Models.FinancialAccountRole
+                {
+                    Id = 2,
+                    Title = "User"
+                },
+                new Models.FinancialAccountRole
+                {
+                    Id = 3,
+                    Title = "Analyst"
+                }
+            );
         }
     }
 }
