@@ -38,8 +38,10 @@ namespace FinancesManagment.Controllers
             FinancialAccountRole ownerRole = unitOfWork.FinancialAccountRolesRepository.Get(r => r.Title == "Owner").FirstOrDefault();
             FinancialAccountMember newMember = new FinancialAccountMember();
             var userId = User.Identity.GetUserId();
-            newMember.FinancialAccountId = newAccount.Id;
-            newMember.FinancialAccountRoleId = ownerRole.Id;
+            // var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            newAccount = unitOfWork.FinancialAccountsRepository.GetByID(newAccount.Id);
+            newMember.FinancialAccountRole = ownerRole;
+            newMember.FinancialAccount = newAccount;
             newMember.ApplicationUserId = userId;
             unitOfWork.FinancialAccountMembersRepository.Insert(newMember);
             objectsAdded += unitOfWork.Save();
@@ -47,14 +49,52 @@ namespace FinancesManagment.Controllers
             {
                 return RedirectToAction("Edit",new { Id = newAccount.Id });
             }
-            ViewBag.Message = "Failed to creare account";
+            ViewBag.Message = "Failed to create account";
             return View();
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int Id)
         {
-            FinancialAccount account = unitOfWork.FinancialAccountsRepository.GetByID(id);
+            FinancialAccount account = unitOfWork.FinancialAccountsRepository.GetByID(Id);
             return View(account);
-        } 
+        }
+
+        [HttpPost]
+        public ActionResult Edit(int Id, string Name)
+        {
+            FinancialAccount account = unitOfWork.FinancialAccountsRepository.GetByID(Id);
+            account.Name = Name;
+            unitOfWork.FinancialAccountsRepository.Update(account);
+            unitOfWork.Save();
+            ViewBag.Message = "Account was saved";
+            return View(account);
+        }
+
+        [HttpPost]
+        public ActionResult RemoveMember(int Id)
+        {
+            var member = unitOfWork.FinancialAccountMembersRepository.GetByID(Id);
+            var Email = member.ApplicationUser.Email;
+            unitOfWork.FinancialAccountMembersRepository.Delete(member);
+            int membersDeleted = unitOfWork.Save();
+            if (membersDeleted > 0)
+            {
+                return Json(new { email = Email, success = true });
+            }
+            else
+            {
+                return Json(new { email = Email, success = false });
+            }
+        }
+
+        public string AddUser()
+        {
+            return "Add user page";
+        }
+
+        public string MakeTransaction()
+        {
+            return "Make transaction page";
+        }
     }
 }

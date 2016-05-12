@@ -10,11 +10,10 @@ namespace FinancesManagment.Models
     {
         public int Id { get; set; }
         public string ApplicationUserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
         public int FinancialAccountId { get; set; }
-        public FinancialAccount FinancialAccount { get; set; }
+        public virtual FinancialAccount FinancialAccount { get; set; }
         public int FinancialAccountRoleId { get; set; }
-        public FinancialAccountRole FinancialAccountRole { get; set; }
-
+        public virtual FinancialAccountRole FinancialAccountRole { get; set; }
     }
 }
