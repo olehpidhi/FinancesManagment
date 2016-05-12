@@ -9,6 +9,20 @@ namespace FinancesManagment.DAL
         private GenericRepository<FinancialAccount> financialAccountRepository;
         private GenericRepository<FinancialAccountMember> financialAccountMemberRepository;
         private GenericRepository<FinancialAccountRole> financialAccountRoleRepository;
+        private GenericRepository<ApplicationUser> userRepository;
+
+        public GenericRepository<ApplicationUser> UserRepository
+        {
+            get
+            {
+
+                if (this.userRepository == null)
+                {
+                    this.userRepository = new GenericRepository<ApplicationUser>(context);
+                }
+                return userRepository;
+            }
+        }
 
         public GenericRepository<FinancialAccount> FinancialAccountsRepository
         {

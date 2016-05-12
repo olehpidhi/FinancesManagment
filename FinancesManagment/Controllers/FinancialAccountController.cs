@@ -38,11 +38,18 @@ namespace FinancesManagment.Controllers
             FinancialAccountRole ownerRole = unitOfWork.FinancialAccountRolesRepository.Get(r => r.Title == "Owner").FirstOrDefault();
             FinancialAccountMember newMember = new FinancialAccountMember();
             var userId = User.Identity.GetUserId();
+
+            ApplicationUser user = unitOfWork.UserRepository.GetByID(userId);
+
+            newMember.FinancialAccountId = newAccount.Id;
+            newMember.FinancialAccountRoleId = ownerRole.Id;
             // var userManager = Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
             newAccount = unitOfWork.FinancialAccountsRepository.GetByID(newAccount.Id);
             newMember.FinancialAccountRole = ownerRole;
             newMember.FinancialAccount = newAccount;
             newMember.ApplicationUserId = userId;
+            newMember.ApplicationUser = user;
+            
             unitOfWork.FinancialAccountMembersRepository.Insert(newMember);
             objectsAdded += unitOfWork.Save();
             if (objectsAdded == 2)
