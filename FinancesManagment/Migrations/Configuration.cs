@@ -32,21 +32,16 @@ namespace FinancesManagment.Migrations
 
             context.FinancialAccountRoles.AddOrUpdate(
                 role => role.Id,
-                new Models.FinancialAccountRole
-                {
-                    Id = 1,
-                    Title = "Owner"
-                },
-                new Models.FinancialAccountRole
-                {
-                    Id = 2,
-                    Title = "User"
-                },
-                new Models.FinancialAccountRole
-                {
-                    Id = 3,
-                    Title = "Analyst"
-                }
+                new Models.FinancialAccountRole { Id = 1, Title = "Owner" },
+                new Models.FinancialAccountRole { Id = 2, Title = "User" },
+                new Models.FinancialAccountRole { Id = 3, Title = "Analyst" }
+            );
+            context.Permissions.AddOrUpdate(
+                permission => permission.Id,
+                new Models.Permission { Id = 1, Title = "Make transaction" },
+                new Models.Permission { Id = 2, Title = "Set quote" },
+                new Models.Permission { Id = 3, Title = "View statistic" },
+                new Models.Permission { Id = 4, Title = "Add user" }
             );
         }
     }

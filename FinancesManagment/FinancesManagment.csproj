@@ -277,6 +277,7 @@
     <Content Include="Views\FinancialAccount\Edit.cshtml" />
     <Content Include="Views\FinancialAccount\AddUser.cshtml" />
     <Content Include="Views\FinancialAccount\SetQuote.cshtml" />
+    <Content Include="Views\FinancialAccount\AccountView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

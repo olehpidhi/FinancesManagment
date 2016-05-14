@@ -18,7 +18,7 @@ namespace FinancesManagment.Models
         public virtual FinancialAccountRole FinancialAccountRole { get; set; }
         public virtual List<MemberPermission> MemberPermissions { get; set; }
         public virtual List<Transaction> Transactions { get; set; }
-        
+
 
         public static IEnumerable<FinancialAccountRole> Roles = new List<FinancialAccountRole>
         {

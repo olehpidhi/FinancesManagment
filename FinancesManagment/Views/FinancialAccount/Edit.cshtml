@@ -90,8 +90,8 @@
                 <div class="btn-group">
                     @if (item.FinancialAccountRole.Title != "Owner")
                     {
-                        <button class="btn btn-info">Edit permissions</button>
-                        @Html.ActionLink("Set Quote", "SetQuote", new { Id = item.Id, Quote = item.Quote }, new { @class="btn btn-info" })
+                        @Html.ActionLink("Edit permissions", "EditPermissions", new { Id = item.Id }, new { @class = "btn btn-info" })
+                        @Html.ActionLink("Set quote", "SetQuote", new { Id = item.Id }, new { @class = "btn btn-info" })
                         <button class="btn btn-danger" onclick="onRemove(@item.Id)">Remove</button>
                     }
                 </div>
@@ -100,7 +100,7 @@
     }
 </table>
 
-
+@Html.ActionLink("To accounts list", "Index", "Home", null, new { @class = "btn btn-default" })
 
 <script type="text/javascript">
     function onRemove(memberId) {

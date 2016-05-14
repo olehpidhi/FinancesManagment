@@ -42,10 +42,19 @@ namespace FinancesManagment.Controllers
             newMember.FinancialAccountRole = ownerRole;
             newMember.FinancialAccount = newAccount;
             newMember.ApplicationUser = user;
-            
             unitOfWork.FinancialAccountMembersRepository.Insert(newMember);
             objectsAdded += unitOfWork.Save();
-            if (objectsAdded == 2)
+            IEnumerable<Permission> ownerPermissions = unitOfWork.PermissionsRepository.Get();
+            foreach (var permission in ownerPermissions)
+            {
+                unitOfWork.MemberPermissionsRepository.Insert(new MemberPermission
+                {
+                    FinancialAccountMember = newMember,
+                    Permission = permission
+                });
+            }
+            objectsAdded += unitOfWork.Save();
+            if (objectsAdded > 0)
             {
                 return RedirectToAction("Edit",new { Id = newAccount.Id });
             }
@@ -55,8 +64,17 @@ namespace FinancesManagment.Controllers
 
         public ActionResult Edit(int Id)
         {
-            FinancialAccount account = unitOfWork.FinancialAccountsRepository.GetByID(Id);
-            return View(account);
+            var userId = User.Identity.GetUserId();
+            FinancialAccountMember member = unitOfWork.FinancialAccountMembersRepository.Get(m => m.FinancialAccount.Id == Id && m.ApplicationUser.Id == userId).FirstOrDefault();
+            if (member == null)
+            {
+                return View("Error");
+            }
+            if (member.FinancialAccountRole.Title == "Owner")
+            {
+                return View(member.FinancialAccount);
+            }
+            return View("AccountView", member);
         }
 
         [HttpPost]
@@ -93,6 +111,11 @@ namespace FinancesManagment.Controllers
             FinancialAccountMember member = new FinancialAccountMember();
             member.FinancialAccount = account;
             return View(member);
+        }
+
+        public string EditPermissions(int Id)
+        {
+            return Id.ToString();
         }
 
         [HttpPost]
