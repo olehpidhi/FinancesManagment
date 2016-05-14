@@ -161,9 +161,57 @@ namespace FinancesManagment.Controllers
             return View(member);
         }
 
-        public string EditPermissions(int Id)
+        public ActionResult EditPermissions(int Id)
         {
-            return Id.ToString();
+            var member = unitOfWork.FinancialAccountMembersRepository.GetByID(Id);
+            var userId = User.Identity.GetUserId();
+            var user = unitOfWork.FinancialAccountMembersRepository.Get(m => m.ApplicationUser.Id == userId && m.FinancialAccount.Id == member.FinancialAccount.Id).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            if (user.FinancialAccountRole.Title != "Owner")
+            {
+                return RedirectToAction("Edit", new { Id = user.FinancialAccount.Id });
+            }
+            return View(member);
+        }
+
+        [HttpPost]
+        public ActionResult AddPermission(int Id, int Permission)
+        {
+            var memberPermission = unitOfWork.MemberPermissionsRepository.Get(p => p.Permission.Id == Permission && p.FinancialAccountMember.Id == Id).FirstOrDefault();
+            string result = "Permission already set";
+            if (memberPermission == null)
+            {
+                var member = unitOfWork.FinancialAccountMembersRepository.GetByID(Id);
+                var permission = unitOfWork.PermissionsRepository.GetByID(Permission);
+                MemberPermission newMemberPermission = new MemberPermission { Permission = permission, FinancialAccountMember = member };
+                unitOfWork.MemberPermissionsRepository.Insert(newMemberPermission);
+                int objectsSaved = unitOfWork.Save();
+                if (objectsSaved > 0)
+                {
+                    result = "Permission added";
+                }
+                else
+                {
+                    result = "Failed to add permission";
+                }
+            }
+            return Json(new { status = result });
+        }
+
+        [HttpPost]
+        public ActionResult RemovePermission(int Id)
+        {
+            var memberPermission = unitOfWork.MemberPermissionsRepository.GetByID(Id);
+            unitOfWork.MemberPermissionsRepository.Delete(memberPermission);
+            int objectDeleted = unitOfWork.Save();
+            if (objectDeleted > 0)
+            {
+                return Json(new { status = "Permission removed", success = true });
+            }
+            return Json(new { status = "Failed to remove permission", success = false });
         }
 
         public ActionResult SetQuote(int Id)

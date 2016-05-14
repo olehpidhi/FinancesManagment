@@ -33,5 +33,11 @@ namespace FinancesManagment.Models
                 Title = "Analyst"
             }
         };
+
+        public static IEnumerable<Permission> Permissions = new List<Permission>
+        {
+            new Permission { Id = 1, Title = "Make transaction" },
+            new Permission { Id = 3, Title = "View statistic" }
+        };
     }
 }
