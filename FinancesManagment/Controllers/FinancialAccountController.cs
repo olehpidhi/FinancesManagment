@@ -212,11 +212,11 @@ namespace FinancesManagment.Controllers
 
             if (result > 0)
             {
-                return Json(new { status = "Transaction successfull."});
+                return Json(new { status = "Transaction successfull.", summary = financialAccount.Summary});
             }
             else
             {
-                return Json(new { status = "Transaction failed." });
+                return Json(new { status = "Transaction failed.", summary = financialAccount.Summary });
             }
 
         }
