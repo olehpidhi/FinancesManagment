@@ -197,9 +197,25 @@ namespace FinancesManagment.Controllers
                 return View(member);
             }
         }
-        public string MakeTransaction(int Id)
+        public ActionResult MakeTransaction(int Id, decimal Amount, string Category)
         {
-            return "Make transaction page";
+            var accountMember = unitOfWork.FinancialAccountMembersRepository.GetByID(Id);
+            var financialAccount = accountMember.FinancialAccount;
+            financialAccount.Summary += Amount;
+            var transaction = new Transaction(Amount, Category, accountMember);
+            unitOfWork.TransactionsRepository.Insert(transaction);
+            unitOfWork.FinancialAccountsRepository.Update(financialAccount);
+            int result = unitOfWork.Save();
+
+            if (result > 0)
+            {
+                return Json(new { status = "Transaction successfull."});
+            }
+            else
+            {
+                return Json(new { status = "Transaction failed." });
+            }
+
         }
     }
 }

@@ -13,10 +13,10 @@
     </div>
 }
 
-@using (Html.BeginForm("Edit", "FinancialAccount", null, FormMethod.Post, new { id = "editform"}))
+@using (Html.BeginForm("Edit", "FinancialAccount", null, FormMethod.Post, new { id = "editform" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -50,12 +50,14 @@
 <div class="row">
     <div class="col-xs-6">
         <label for="Amount">Amount</label>
-        <input id="Amount" class="form-control text-box single-line" type="number"/>
+        <input id="Amount" class="form-control text-box single-line" type="number" />
 
         <label for="Category">Category</label>
         <input id="Category" class="form-control text-box single-line" type="text" />
-        
-        <button class="form-control btn btn-primary" onclick="window.location.href='@Url.Action("MakeTransaction", "FinancialAccount", new { Id = Model.Id })'">Transact</button>
+        <br />
+        <a href="@Url.Action("MakeTransaction", "FinancialAccount", new { Id = Model.Id })" class="btn btn-info">
+            <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+        </a>
     </div>
     <div class="col-xs-6">
         <table class="table">
@@ -69,38 +71,41 @@
                 <th></th>
             </tr>
 
-    @foreach (var item in Model.FinancialAccountMembers)
-    {
-        <tr id="member_@item.Id">
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.Surname)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FinancialAccountRole.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quote)
-            </td>
-            <td>
-                <div class="btn-group">
-                    @if (item.FinancialAccountRole.Title != "Owner")
-                    {
-                        @Html.ActionLink("Edit permissions", "EditPermissions", new { Id = item.Id }, new { @class = "btn btn-info" })
-                        @Html.ActionLink("Set quote", "SetQuote", new { Id = item.Id }, new { @class = "btn btn-info" })
-                        <button class="btn btn-danger" onclick="onRemove(@item.Id)">Remove</button>
-                    }
-                </div>
-            </td>
-        </tr>
-    }
-</table>
+            @foreach (var item in Model.FinancialAccountMembers)
+            {
+                <tr id="member_@item.Id">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApplicationUser.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApplicationUser.Surname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinancialAccountRole.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quote)
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            @if (item.FinancialAccountRole.Title != "Owner")
+                            {
+                                @Html.ActionLink("Edit permissions", "EditPermissions", new { Id = item.Id }, new { @class = "btn btn-info" })
+                                @Html.ActionLink("Set quote", "SetQuote", new { Id = item.Id }, new { @class = "btn btn-info" })
+                                <button class="btn btn-danger" onclick="onRemove(@item.Id)">Remove</button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
 
+<hr />
 @Html.ActionLink("To accounts list", "Index", "Home", null, new { @class = "btn btn-default" })
 
 <script type="text/javascript">
@@ -115,7 +120,7 @@
             } else {
                 $("#result").addClass("alert-danger");
                 $("#result").removeClass("alert-info");
-                $("#result").text("Failed to remove "+ data.email + " from the account");
+                $("#result").text("Failed to remove " + data.email + " from the account");
                 $("#result").show();
             }
         });
@@ -124,4 +129,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
 }
