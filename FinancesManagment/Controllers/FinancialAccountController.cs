@@ -175,7 +175,8 @@ namespace FinancesManagment.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            if (user.MemberPermissions.Find(p => p.Permission.Title == "Set quote") == null)
+            var permission = user.MemberPermissions.Find(p => p.Permission.Title == "Set quote");
+            if (permission == null)
             {
                 return RedirectToAction("Edit", new { Id = user.FinancialAccount.Id });
             }
