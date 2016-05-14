@@ -80,12 +80,20 @@ namespace FinancesManagment.Controllers
         [HttpPost]
         public ActionResult Edit(int Id, string Name)
         {
-            FinancialAccount account = unitOfWork.FinancialAccountsRepository.GetByID(Id);
-            account.Name = Name;
-            unitOfWork.FinancialAccountsRepository.Update(account);
-            unitOfWork.Save();
-            ViewBag.Message = "Account was saved";
-            return View(account);
+            FinancialAccountMember member = unitOfWork.FinancialAccountMembersRepository.Get(m => m.FinancialAccount.Id == Id && m.ApplicationUser.Id == User.Identity.GetUserId()).FirstOrDefault();
+            if (member == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            if (member.FinancialAccountRole.Title == "Owner")
+            {
+                member.FinancialAccount.Name = Name;
+                unitOfWork.FinancialAccountsRepository.Update(member.FinancialAccount);
+                unitOfWork.Save();
+                ViewBag.Message = "Account was saved";
+                return View(member.FinancialAccount);
+            }
+            return RedirectToAction("Edit", new { Id = member.FinancialAccount.Id });
         }
 
         [HttpPost]
@@ -107,15 +115,19 @@ namespace FinancesManagment.Controllers
 
         public ActionResult AddUser(int Id)
         {
-            FinancialAccount account = unitOfWork.FinancialAccountsRepository.GetByID(Id);
-            FinancialAccountMember member = new FinancialAccountMember();
-            member.FinancialAccount = account;
-            return View(member);
-        }
-
-        public string EditPermissions(int Id)
-        {
-            return Id.ToString();
+            var userId = User.Identity.GetUserId();
+            FinancialAccountMember member = unitOfWork.FinancialAccountMembersRepository.Get(m => m.ApplicationUser.Id == userId && m.FinancialAccount.Id == Id).FirstOrDefault();
+            if (member == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            if (member.MemberPermissions.Find(p => p.Permission.Title == "Add user") != null)
+            {
+                FinancialAccountMember newMember = new FinancialAccountMember();
+                newMember.FinancialAccount = member.FinancialAccount;
+                return View(newMember);
+            }
+            return RedirectToAction("Edit", new { Id = member.FinancialAccount.Id });
         }
 
         [HttpPost]
@@ -148,9 +160,23 @@ namespace FinancesManagment.Controllers
             return View(member);
         }
 
+        public string EditPermissions(int Id)
+        {
+            return Id.ToString();
+        }
+
         public ActionResult SetQuote(int Id)
         {
             FinancialAccountMember member = unitOfWork.FinancialAccountMembersRepository.GetByID(Id);
+            FinancialAccountMember user = unitOfWork.FinancialAccountMembersRepository.Get(m => m.FinancialAccount.Id == member.FinancialAccount.Id && m.ApplicationUser.Id == User.Identity.GetUserId()).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            if (user.MemberPermissions.Find(p => p.Permission.Title == "Set quote") == null)
+            {
+                return RedirectToAction("Edit", new { Id = user.FinancialAccount.Id });
+            }
             return View(member);
         }
 
