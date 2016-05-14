@@ -40,7 +40,6 @@
 }
 <div class="form-group btn-group">
     <button class="btn btn-primary" onclick="$('#editform').submit()">Save</button>
-    <button class="btn btn-primary" onclick="window.location.href='@Url.Action("MakeTransaction", "FinancialAccount", new { Id = Model.Id })'">Make transaction</button>
     <button class="btn btn-primary" onclick="window.location.href='@Url.Action("AddUser", "FinancialAccount", new { Id = Model.Id })'">Add user</button>
 </div>
 
@@ -48,39 +47,51 @@
     <a href="#" class="close" aria-label="close" onclick="$('#result').hide()">&times;</a>
 </div>
 
-<table class="table">
-    <tr>
-        <th>
-            Email
-        </th>
-        <th>
-            Role
-        </th>
-        <th></th>
-    </tr>
+<div class="row">
+    <div class="col-xs-6">
+        <label for="Amount">Amount</label>
+        <input id="Amount" class="form-control text-box single-line" type="number"/>
 
-    @foreach (var item in Model.FinancialAccountMembers)
-    {
-        <tr id="member_@item.Id">
-            <td>
-                @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FinancialAccountRole.Title)
-            </td>
-            <td>
-                <div class="btn-group">
-                    @if (item.FinancialAccountRole.Title != "Owner")
-                    {
-                        <button class="btn btn-info">Edit permissions</button>
-                        <button class="btn btn-danger" onclick="onRemove(@item.Id)">Remove</button>
-                    }
-                </div>
-            </td>
-        </tr>
-    }
-</table>
+        <label for="Category">Category</label>
+        <input id="Category" class="form-control text-box single-line" type="text" />
+        
+        <button class="form-control btn btn-primary" onclick="window.location.href='@Url.Action("MakeTransaction", "FinancialAccount", new { Id = Model.Id })'">Transact</button>
+    </div>
+    <div class="col-xs-6">
+        <table class="table">
+            <tr>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Role
+                </th>
+                <th></th>
+            </tr>
 
+            @foreach (var item in Model.FinancialAccountMembers)
+            {
+                <tr id="member_@item.Id">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FinancialAccountRole.Title)
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            @if (item.FinancialAccountRole.Title != "Owner")
+                            {
+                                <button class="btn btn-info">Edit permissions</button>
+                                <button class="btn btn-danger" onclick="onRemove(@item.Id)">Remove</button>
+                            }
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
 
 
 <script type="text/javascript">
@@ -101,9 +112,6 @@
         });
     }
 
-    function redirect(url) {
-        window.location.href = url;
-    }
 </script>
 
 @section Scripts {
