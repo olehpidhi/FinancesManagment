@@ -40,7 +40,7 @@
 }
 <div class="form-group btn-group">
     <button class="btn btn-primary" onclick="$('#editform').submit()">Save</button>
-    <button class="btn btn-primary" onclick="window.location.href='@Url.Action("AddUser", "FinancialAccount", new { Id = Model.Id })'">Add user</button>
+    @Html.ActionLink("Add user", "AddUser", new { Id = Model.Id }, new { @class = "btn btn-primary" })
 </div>
 
 <div id="result" class="alert alert-info form-group" hidden>

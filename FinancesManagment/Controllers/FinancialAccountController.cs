@@ -68,7 +68,7 @@ namespace FinancesManagment.Controllers
             FinancialAccountMember member = unitOfWork.FinancialAccountMembersRepository.Get(m => m.FinancialAccount.Id == Id && m.ApplicationUser.Id == userId).FirstOrDefault();
             if (member == null)
             {
-                return View("Error");
+                return RedirectToAction("Index", "Home");
             }
             if (member.FinancialAccountRole.Title == "Owner")
             {
@@ -80,7 +80,8 @@ namespace FinancesManagment.Controllers
         [HttpPost]
         public ActionResult Edit(int Id, string Name)
         {
-            FinancialAccountMember member = unitOfWork.FinancialAccountMembersRepository.Get(m => m.FinancialAccount.Id == Id && m.ApplicationUser.Id == User.Identity.GetUserId()).FirstOrDefault();
+            var userId = User.Identity.GetUserId();
+            FinancialAccountMember member = unitOfWork.FinancialAccountMembersRepository.Get(m => m.FinancialAccount.Id == Id && m.ApplicationUser.Id == userId).FirstOrDefault();
             if (member == null)
             {
                 return RedirectToAction("Index", "Home");
@@ -168,12 +169,14 @@ namespace FinancesManagment.Controllers
         public ActionResult SetQuote(int Id)
         {
             FinancialAccountMember member = unitOfWork.FinancialAccountMembersRepository.GetByID(Id);
-            FinancialAccountMember user = unitOfWork.FinancialAccountMembersRepository.Get(m => m.FinancialAccount.Id == member.FinancialAccount.Id && m.ApplicationUser.Id == User.Identity.GetUserId()).FirstOrDefault();
+            var userId = User.Identity.GetUserId();
+            FinancialAccountMember user = unitOfWork.FinancialAccountMembersRepository.Get(m => m.FinancialAccount.Id == member.FinancialAccount.Id && m.ApplicationUser.Id == userId).FirstOrDefault();
             if (user == null)
             {
                 return RedirectToAction("Index", "Home");
             }
-            if (user.MemberPermissions.Find(p => p.Permission.Title == "Set quote") == null)
+            var permission = user.MemberPermissions.Find(p => p.Permission.Title == "Set quote");
+            if (permission == null)
             {
                 return RedirectToAction("Edit", new { Id = user.FinancialAccount.Id });
             }
