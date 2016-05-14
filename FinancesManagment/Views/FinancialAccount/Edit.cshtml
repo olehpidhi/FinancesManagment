@@ -69,30 +69,39 @@
                 <th></th>
             </tr>
 
-            @foreach (var item in Model.FinancialAccountMembers)
-            {
-                <tr id="member_@item.Id">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FinancialAccountRole.Title)
-                    </td>
-                    <td>
-                        <div class="btn-group">
-                            @if (item.FinancialAccountRole.Title != "Owner")
-                            {
-                                <button class="btn btn-info">Edit permissions</button>
-                                <button class="btn btn-danger" onclick="onRemove(@item.Id)">Remove</button>
-                            }
-                        </div>
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
-</div>
+    @foreach (var item in Model.FinancialAccountMembers)
+    {
+        <tr id="member_@item.Id">
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUser.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ApplicationUser.Surname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinancialAccountRole.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quote)
+            </td>
+            <td>
+                <div class="btn-group">
+                    @if (item.FinancialAccountRole.Title != "Owner")
+                    {
+                        @Html.ActionLink("Edit permissions", "EditPermissions", new { Id = item.Id }, new { @class = "btn btn-info" })
+                        @Html.ActionLink("Set quote", "SetQuote", new { Id = item.Id }, new { @class = "btn btn-info" })
+                        <button class="btn btn-danger" onclick="onRemove(@item.Id)">Remove</button>
+                    }
+                </div>
+            </td>
+        </tr>
+    }
+</table>
 
+@Html.ActionLink("To accounts list", "Index", "Home", null, new { @class = "btn btn-default" })
 
 <script type="text/javascript">
     function onRemove(memberId) {
@@ -111,7 +120,6 @@
             }
         });
     }
-
 </script>
 
 @section Scripts {

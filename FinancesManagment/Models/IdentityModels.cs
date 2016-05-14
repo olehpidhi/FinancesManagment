@@ -44,5 +44,8 @@ namespace FinancesManagment.Models
         public DbSet<FinancialAccount> FinancialAccounts { get; set; }
         public DbSet<FinancialAccountRole> FinancialAccountRoles { get; set; }
         public DbSet<FinancialAccountMember> FinancialAccountMembers { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<MemberPermission> MemberPermissions { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
     }
 }
