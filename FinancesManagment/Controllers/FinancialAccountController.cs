@@ -72,7 +72,7 @@ namespace FinancesManagment.Controllers
             }
             if (member.FinancialAccountRole.Title == "Owner")
             {
-                return View(member.FinancialAccount);
+                return View(member);
             }
             return View("AccountView", member);
         }
@@ -200,25 +200,30 @@ namespace FinancesManagment.Controllers
                 return View(member);
             }
         }
+
+        [HttpPost]
         public ActionResult MakeTransaction(int Id, decimal Amount, string Category)
         {
             var accountMember = unitOfWork.FinancialAccountMembersRepository.GetByID(Id);
-            var financialAccount = accountMember.FinancialAccount;
-            financialAccount.Summary += Amount;
-            var transaction = new Transaction(Amount, Category, accountMember);
-            unitOfWork.TransactionsRepository.Insert(transaction);
-            unitOfWork.FinancialAccountsRepository.Update(financialAccount);
-            int result = unitOfWork.Save();
-
-            if (result > 0)
+            if (accountMember.MemberPermissions.Find(p => p.Permission.Title == "Make transaction") != null)
             {
-                return Json(new { status = "Transaction successfull."});
-            }
-            else
-            {
-                return Json(new { status = "Transaction failed." });
-            }
+                var financialAccount = accountMember.FinancialAccount;
+                financialAccount.Summary += Amount;
+                var transaction = new Transaction(Amount, Category, accountMember);
+                unitOfWork.TransactionsRepository.Insert(transaction);
+                unitOfWork.FinancialAccountsRepository.Update(financialAccount);
+                int result = unitOfWork.Save();
 
+                if (result > 0)
+                {
+                    return Json(new { status = "Transaction successfull." });
+                }
+                else
+                {
+                    return Json(new { status = "Transaction failed." });
+                }
+            }
+            return Json(new { status = "Transaction failed." });
         }
     }
 }

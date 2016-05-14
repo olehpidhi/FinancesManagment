@@ -1,4 +1,4 @@
-﻿@model FinancesManagment.Models.FinancialAccount
+﻿@model FinancesManagment.Models.FinancialAccountMember
 
 @{
     ViewBag.Title = "Edit";
@@ -20,27 +20,27 @@
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.FinancialAccount.Id)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.FinancialAccount.Name, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.FinancialAccount.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FinancialAccount.Name, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Summary, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.FinancialAccount.Summary, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DisplayFor(modelItem => Model.Summary, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DisplayFor(modelItem => Model.FinancialAccount.Summary, new { htmlAttributes = new { @class = "form-control" } })
             </div>
         </div>
     </div>
 }
 <div class="form-group btn-group">
     <button class="btn btn-primary" onclick="$('#editform').submit()">Save</button>
-    @Html.ActionLink("Add user", "AddUser", new { Id = Model.Id }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Add user", "AddUser", new { Id = Model.FinancialAccount.Id }, new { @class = "btn btn-primary" })
 </div>
 
 <div id="result" class="alert alert-info form-group" hidden>
@@ -48,17 +48,7 @@
 </div>
 
 <div class="row">
-    <div class="col-xs-6">
-        <label for="Amount">Amount</label>
-        <input id="Amount" class="form-control text-box single-line" type="number" />
-
-        <label for="Category">Category</label>
-        <input id="Category" class="form-control text-box single-line" type="text" />
-        <br />
-        <a href="@Url.Action("MakeTransaction", "FinancialAccount", new { Id = Model.Id })" class="btn btn-info">
-            <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
-        </a>
-    </div>
+    @Html.Partial("Transaction", new { Id = Model.Id })
     <div class="col-xs-6">
         <table class="table">
             <tr>
@@ -66,12 +56,21 @@
                     Email
                 </th>
                 <th>
+                    Name
+                </th>
+                <th>
+                    Surname
+                </th>
+                <th>
                     Role
+                </th>
+                <th>
+                    Quote
                 </th>
                 <th></th>
             </tr>
 
-            @foreach (var item in Model.FinancialAccountMembers)
+            @foreach (var item in Model.FinancialAccount.FinancialAccountMembers)
             {
                 <tr id="member_@item.Id">
                     <td>

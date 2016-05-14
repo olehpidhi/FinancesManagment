@@ -1,0 +1,29 @@
+﻿<div class="col-xs-6">
+    <label for="Amount">Amount</label>
+    <input id="Amount" class="form-control text-box single-line" type="number" />
+
+    <label for="Category">Category</label>
+    <input id="Category" class="form-control text-box single-line" type="text" />
+    <br />
+    <a onclick="makeTransaction()" class="btn btn-info">
+        <span class="glyphicon glyphicon-transfer" aria-hidden="true"></span>
+    </a>
+</div>
+
+<script type="text/javascript">
+    function makeTransaction() {
+        var data = {
+            Id: @Model.Id,
+            Amount: $("#Amount").val(),
+            //Currency: $("#Currency"),
+            Category: $("#Category").val()
+        }
+        console.log(data)
+
+
+        $.post("@Url.Action("MakeTransaction")", data, function (data) {
+            $("#result").text(data.status);
+            $("#result").show();
+        });
+    }
+</script>
