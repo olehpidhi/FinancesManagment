@@ -62,6 +62,24 @@ namespace FinancesManagment.Controllers
             return View();
         }
 
+        public ActionResult DeleteAccount(int Id)
+        {
+            var userId = User.Identity.GetUserId();
+            FinancialAccountMember member = unitOfWork.FinancialAccountMembersRepository.Get(m => m.FinancialAccount.Id == Id && m.ApplicationUser.Id == userId).FirstOrDefault();
+            if (member == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            if (member.FinancialAccountRole.Title != "Owner")
+            {
+                RedirectToAction("Edit", new { Id = Id });
+            }
+            var acc = member.FinancialAccount;
+            unitOfWork.FinancialAccountsRepository.Delete(acc);
+            unitOfWork.Save();
+            return RedirectToAction("Index", "Home");
+        }
+
         public ActionResult Edit(int Id)
         {
             var userId = User.Identity.GetUserId();

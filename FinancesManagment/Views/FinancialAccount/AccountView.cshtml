@@ -24,7 +24,7 @@
 @if (Model.MemberPermissions.Find(p => p.Permission.Title == "Make transaction") != null)
 {
     <div class="row">
-        @Html.Partial("Transaction", new { Id = Model.Id })
+        @Html.Partial("Transaction", Model)
     </div>
 }
 <br />

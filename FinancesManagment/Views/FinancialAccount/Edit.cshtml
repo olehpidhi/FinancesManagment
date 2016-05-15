@@ -41,6 +41,7 @@
 <div class="form-group btn-group">
     <button class="btn btn-primary" onclick="$('#editform').submit()">Save</button>
     @Html.ActionLink("Add user", "AddUser", new { Id = Model.FinancialAccount.Id }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Delete account", "DeleteAccount", new { Id = Model.FinancialAccount.Id }, new { @class = "btn btn-danger" })
 </div>
 
 <div id="result" class="alert alert-info form-group" hidden>
@@ -48,7 +49,7 @@
 </div>
 
 <div class="row">
-    @Html.Partial("Transaction", new { Id = Model.Id })
+    @Html.Partial("Transaction", Model)
     <div class="col-xs-6">
         <table class="table">
             <tr>
