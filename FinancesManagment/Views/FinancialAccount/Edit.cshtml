@@ -41,7 +41,7 @@
 <div class="form-group btn-group">
     <button class="btn btn-primary" onclick="$('#editform').submit()">Save</button>
     @Html.ActionLink("Add user", "AddUser", new { Id = Model.FinancialAccount.Id }, new { @class = "btn btn-primary" })
-    @Html.ActionLink("Delete account", "DeleteAccount", new { Id = Model.FinancialAccount.Id }, new { @class = "btn btn-danger" })
+    <button class="btn btn-danger" onclick="deleteAccount(@Model.FinancialAccount.Id)">Delete account</button>
 </div>
 
 <div id="result" class="alert alert-info form-group" hidden>
@@ -95,7 +95,7 @@
                             {
                                 @Html.ActionLink("Edit permissions", "EditPermissions", new { Id = item.Id }, new { @class = "btn btn-info" })
                                 @Html.ActionLink("Set quote", "SetQuote", new { Id = item.Id }, new { @class = "btn btn-info" })
-                                <button class="btn btn-danger" onclick="onRemove(@item.Id)">Remove</button>
+                                <button onclick="onRemove(@item.Id)" class="btn btn-danger">Remove</button>
                             }
                         </div>
                     </td>
@@ -110,21 +110,52 @@
 
 <script type="text/javascript">
     function onRemove(memberId) {
-        $.post("@Url.Action("RemoveMember")", { Id: memberId }, function (data) {
-            if (data.success) {
-                $("#member_" + memberId).remove();
-                $("#result").addClass("alert-info");
-                $("#result").removeClass("alert-danger");
-                $("#result").text(data.email + " was successfully removed from the account");
-                $("#result").show();
-            } else {
-                $("#result").addClass("alert-danger");
-                $("#result").removeClass("alert-info");
-                $("#result").text("Failed to remove " + data.email + " from the account");
-                $("#result").show();
-            }
+        createConfirm(function () {
+            $.post("@Url.Action("RemoveMember")", { Id: memberId }, function (data) {
+                if (data.success) {
+                    $("#member_" + memberId).remove();
+                    createAlert("User removed");
+                } else {
+                    createAlert("Failed to remove user");
+                }
+            });
         });
     }
+
+    function deleteAccount(account) {
+        createConfirm(function () {
+            $.post("@Url.Action("DeleteAccount")", { Id: account }, function (data) {
+                if (data.success) {
+                    createAlert("Account deleted", function () { window.location.href = '/'; });
+                } else {
+                    createAlert("Failed to delete account");
+                }
+            });
+        });
+    }
+
+    function createAlert(text, onConfirm) {
+        $.alert({
+            content: "",
+            title: text,
+            confirm: onConfirm || function() {},
+            confirmButton: 'Ok'
+        });
+    }
+
+    function createConfirm(onConfirm) {
+        $.confirm({
+            content: "",
+            title: "Are you sure?",
+            confirm: onConfirm,
+            cancel: function () {
+            },
+            confirmButton: 'Yes',
+            cancelButton: 'No'
+        });
+    }
+
+
 </script>
 
 @section Scripts {

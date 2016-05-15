@@ -62,28 +62,34 @@ namespace FinancesManagment.Controllers
             return View();
         }
 
+        [HttpPost]
         public ActionResult DeleteAccount(int Id)
         {
             var userId = User.Identity.GetUserId();
             FinancialAccountMember member = unitOfWork.FinancialAccountMembersRepository.Get(m => m.FinancialAccount.Id == Id && m.ApplicationUser.Id == userId).FirstOrDefault();
             if (member == null)
             {
-                return RedirectToAction("Index", "Home");
+                return Json(new { status = "You aren't member of the account", success = false });
             }
             if (member.FinancialAccountRole.Title != "Owner")
             {
-                RedirectToAction("Edit", new { Id = Id });
+                return Json(new { status = "You don't have permission to delete account", success = false });
             }
             var acc = unitOfWork.FinancialAccountsRepository.GetByID(member.FinancialAccount.Id);
+            if (acc.Summary != 0)
+            {
+                return Json(new { status = "The account is not empty", success = false });
+            }
             foreach (var m in acc.FinancialAccountMembers)
             {
                 unitOfWork.MemberPermissionsRepository.DeleteRange(m.MemberPermissions);
                 unitOfWork.TransactionsRepository.DeleteRange(m.Transactions);
             }
             unitOfWork.FinancialAccountMembersRepository.DeleteRange(acc.FinancialAccountMembers);
+            var name = acc.Name;
             unitOfWork.FinancialAccountsRepository.Delete(acc);
             unitOfWork.Save();
-            return RedirectToAction("Index", "Home");
+            return Json(new { status = string.Format("{0} was successfully deleted", name), success = true });
         }
 
         public ActionResult Edit(int Id)
@@ -126,6 +132,8 @@ namespace FinancesManagment.Controllers
         {
             var member = unitOfWork.FinancialAccountMembersRepository.GetByID(Id);
             var Email = member.ApplicationUser.Email;
+            unitOfWork.MemberPermissionsRepository.DeleteRange(member.MemberPermissions);
+            unitOfWork.TransactionsRepository.DeleteRange(member.Transactions);
             unitOfWork.FinancialAccountMembersRepository.Delete(member);
             int membersDeleted = unitOfWork.Save();
             if (membersDeleted > 0)
