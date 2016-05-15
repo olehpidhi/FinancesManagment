@@ -1,18 +1,29 @@
 ﻿@model IEnumerable<FinancesManagment.Models.Transaction>
-@foreach (var item in @Model)
-{
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Amount)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Category)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FinancialAccountMember.ApplicationUser.Email)
-        </td>
-    </tr>
-}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Transaction Id</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>User</th>
+        </tr>
+    </thead>
+    @foreach (var item in @Model)
+    {
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinancialAccountMember.ApplicationUser.Email)
+            </td>
+        </tr>
+    }
+</table>

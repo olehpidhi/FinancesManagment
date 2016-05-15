@@ -4,7 +4,7 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Financial Account</h2>
+<h2>Financial Account @Html.ActionLink("To accounts list", "Index", "Home", null, new { @class = "btn btn-default" })</h2>
 
 @if (ViewBag.Message != null)
 {
@@ -17,32 +17,32 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.FinancialAccount.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.FinancialAccount.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FinancialAccount.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FinancialAccount.Name, "", new { @class = "text-danger" })
+    <div class="container">
+        <div class="jumbotron">
+            <div class="container">
+                @Html.LabelFor(model => model.FinancialAccount.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div>
+                    @Html.EditorFor(model => model.FinancialAccount.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FinancialAccount.Name, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.FinancialAccount.Summary, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div id="summary" class="col-md-10">
-                @Html.DisplayFor(modelItem => Model.FinancialAccount.Summary, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="container">
+                @Html.LabelFor(model => model.FinancialAccount.Summary, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div id="summary">
+                    @Html.DisplayFor(modelItem => Model.FinancialAccount.Summary, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-info" onclick="$('#editform').submit()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button>
+                <a class="btn btn-danger" href="@Url.Action("DeleteAccount", new { Id = Model.FinancialAccount.Id })">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </a>
+
             </div>
         </div>
     </div>
 }
-<div class="form-group btn-group">
-    <button class="btn btn-primary" onclick="$('#editform').submit()">Save</button>
-    @Html.ActionLink("Add user", "AddUser", new { Id = Model.FinancialAccount.Id }, new { @class = "btn btn-primary" })
-    @Html.ActionLink("Delete account", "DeleteAccount", new { Id = Model.FinancialAccount.Id }, new { @class = "btn btn-danger" })
-</div>
 
 <div id="result" class="alert alert-info form-group" hidden>
     <a href="#" class="close" aria-label="close" onclick="$('#result').hide()">x</a>
@@ -50,72 +50,85 @@
 </div>
 
 <div class="row">
-    @Html.Partial("Transaction", Model)
-    <div class="col-xs-6">
-        <table class="table">
-            <tr>
-                <th>
-                    Email
-                </th>
-                <th>
-                    Name
-                </th>
-                <th>
-                    Surname
-                </th>
-                <th>
-                    Role
-                </th>
-                <th>
-                    Quote
-                </th>
-                <th></th>
-            </tr>
-
-            @foreach (var item in Model.FinancialAccount.FinancialAccountMembers)
-            {
-                <tr id="member_@item.Id">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ApplicationUser.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ApplicationUser.Surname)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FinancialAccountRole.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quote)
-                    </td>
-                    <td>
-                        <div class="btn-group btn-group-sm btn-group-vertical">
-                            @if (item.FinancialAccountRole.Title != "Owner")
-                            {
-                                @Html.ActionLink("Edit permissions", "EditPermissions", new { Id = item.Id }, new { @class = "btn btn-sm btn-info" })
-                                @Html.ActionLink("Set quote", "SetQuote", new { Id = item.Id }, new { @class = "btn btn-sm btn-info" })
-                                <button class="btn btn-sm btn-danger" onclick="onRemove(@item.Id)">Remove</button>
-                            }
-                        </div>
-                    </td>
-                </tr>
-            }
-        </table>
+    <div class="col-xs-12">
+        @Html.Partial("Transaction", Model)
     </div>
 </div>
-<div class="row">
-    @Html.Partial("TransactionsHistory", Model.Transactions)
-</div>
 
-<hr />
-@Html.ActionLink("To accounts list", "Index", "Home", null, new { @class = "btn btn-default" })
+<div class="row">
+    <div class="col-xs-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Transactions History
+            </div>
+            <div class="panel-body">
+                @Html.Partial("TransactionsHistory", Model.Transactions)
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Account Members @Html.ActionLink("+", "AddUser", new { Id = Model.FinancialAccount.Id }, new { @class = "btn btn-xs btn-default" })
+            </div>
+            <div class="panel-body">
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th>Email</th>
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th>Role</th>
+                            <th>Quote</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model.FinancialAccount.FinancialAccountMembers)
+                        {
+                            <tr id="member_@item.Id">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ApplicationUser.Email)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ApplicationUser.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ApplicationUser.Surname)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FinancialAccountRole.Title)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Quote)
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        @if (item.FinancialAccountRole.Title != "Owner")
+                                        {
+                                            <a class="btn btn-info" href="@Url.Action("EditPermissions", new { Id = item.Id })">
+                                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                            </a>
+                                            @Html.ActionLink("%", "SetQuote", new { Id = item.Id }, new { @class = "btn btn-xs btn-info" })
+                                            <button class="btn btn-xs btn-danger" onclick="onRemove(@item.Id)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     function onRemove(memberId) {
         $.post("@Url.Action("RemoveMember")", { Id: memberId }, function (data) {
-            if (data.success) { 
+            if (data.success) {
                 $("#member_" + memberId).remove();
                 $("#result").addClass("alert-info");
                 $("#result").removeClass("alert-danger");
@@ -128,6 +141,11 @@
                 $("#result").show();
             }
         });
+    }
+
+    function toggleHistory(historyContainer) {
+        var historyState = historyContainer.is(":hidden")
+        historyContainer.slideToggle(historyState)
     }
 </script>
 

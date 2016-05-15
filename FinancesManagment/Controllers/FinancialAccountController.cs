@@ -28,11 +28,12 @@ namespace FinancesManagment.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(string Name)
+        public ActionResult Create(string Name, string Currency)
         {
             FinancialAccount newAccount = new FinancialAccount();
             newAccount.Name = Name;
             newAccount.Summary = 0;
+            newAccount.Currency = Currency;
             unitOfWork.FinancialAccountsRepository.Insert(newAccount);
             int objectsAdded = unitOfWork.Save();
             FinancialAccountRole ownerRole = unitOfWork.FinancialAccountRolesRepository.Get(r => r.Title == "Owner").FirstOrDefault();
