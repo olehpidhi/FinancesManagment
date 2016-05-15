@@ -72,6 +72,11 @@ namespace FinancesManagment.DAL
             dbSet.Remove(entityToDelete);
         }
 
+        public virtual void DeleteRange(IEnumerable<TEntity> entityToDelete)
+        {
+            dbSet.RemoveRange(entityToDelete);
+        }
+
         public virtual void Update(TEntity entityToUpdate)
         {
             dbSet.Attach(entityToUpdate);

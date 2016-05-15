@@ -74,7 +74,13 @@ namespace FinancesManagment.Controllers
             {
                 RedirectToAction("Edit", new { Id = Id });
             }
-            var acc = member.FinancialAccount;
+            var acc = unitOfWork.FinancialAccountsRepository.GetByID(member.FinancialAccount.Id);
+            foreach (var m in acc.FinancialAccountMembers)
+            {
+                unitOfWork.MemberPermissionsRepository.DeleteRange(m.MemberPermissions);
+                unitOfWork.TransactionsRepository.DeleteRange(m.Transactions);
+            }
+            unitOfWork.FinancialAccountMembersRepository.DeleteRange(acc.FinancialAccountMembers);
             unitOfWork.FinancialAccountsRepository.Delete(acc);
             unitOfWork.Save();
             return RedirectToAction("Index", "Home");
@@ -275,7 +281,7 @@ namespace FinancesManagment.Controllers
             {
                 var financialAccount = accountMember.FinancialAccount;
                 financialAccount.Summary += Amount;
-                var transaction = new Transaction(Amount, Category, accountMember);
+                var transaction = new Transaction { Amount = Amount, Category = Category, FinancialAccountMember = accountMember };
                 unitOfWork.TransactionsRepository.Insert(transaction);
                 unitOfWork.FinancialAccountsRepository.Update(financialAccount);
                 int result = unitOfWork.Save();
