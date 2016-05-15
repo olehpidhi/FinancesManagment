@@ -23,7 +23,7 @@
 
 
         $.post("@Url.Action("MakeTransaction")", data, function (data) {
-            $("#result").text(data.status);
+            $("#resultInfo").text(data.status);
             $("#result").show();
             if (data.summary) {
                 $("#summary").text(data.summary);

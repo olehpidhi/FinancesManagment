@@ -46,6 +46,7 @@
 
 <div id="result" class="alert alert-info form-group" hidden>
     <a href="#" class="close" aria-label="close" onclick="$('#result').hide()">x</a>
+    <p id="resultInfo"></p>
 </div>
 
 <div class="row">
@@ -90,12 +91,12 @@
                         @Html.DisplayFor(modelItem => item.Quote)
                     </td>
                     <td>
-                        <div class="btn-group">
+                        <div class="btn-group btn-group-sm btn-group-vertical">
                             @if (item.FinancialAccountRole.Title != "Owner")
                             {
-                                @Html.ActionLink("Edit permissions", "EditPermissions", new { Id = item.Id }, new { @class = "btn btn-info" })
-                                @Html.ActionLink("Set quote", "SetQuote", new { Id = item.Id }, new { @class = "btn btn-info" })
-                                <button class="btn btn-danger" onclick="onRemove(@item.Id)">Remove</button>
+                                @Html.ActionLink("Edit permissions", "EditPermissions", new { Id = item.Id }, new { @class = "btn btn-sm btn-info" })
+                                @Html.ActionLink("Set quote", "SetQuote", new { Id = item.Id }, new { @class = "btn btn-sm btn-info" })
+                                <button class="btn btn-sm btn-danger" onclick="onRemove(@item.Id)">Remove</button>
                             }
                         </div>
                     </td>
@@ -103,6 +104,9 @@
             }
         </table>
     </div>
+</div>
+<div class="row">
+    @Html.Partial("TransactionsHistory", Model.Transactions)
 </div>
 
 <hr />
@@ -115,12 +119,12 @@
                 $("#member_" + memberId).remove();
                 $("#result").addClass("alert-info");
                 $("#result").removeClass("alert-danger");
-                $("#result").text(data.email + " was successfully removed from the account");
+                $("#resultInfo").text(data.email + " was successfully removed from the account");
                 $("#result").show();
             } else {
                 $("#result").addClass("alert-danger");
                 $("#result").removeClass("alert-info");
-                $("#result").text("Failed to remove " + data.email + " from the account");
+                $("#resultInfo").text("Failed to remove " + data.email + " from the account");
                 $("#result").show();
             }
         });

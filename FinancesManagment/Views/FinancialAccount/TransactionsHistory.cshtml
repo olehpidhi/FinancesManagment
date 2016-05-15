@@ -1,17 +1,18 @@
-﻿@foreach (var item in Model)
+﻿@model IEnumerable<FinancesManagment.Models.Transaction>
+@foreach (var item in @Model)
 {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Id)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Summary)
+            @Html.DisplayFor(modelItem => item.Amount)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Category)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.FinancialAccountMember..ApplicationUser.Email)
+            @Html.DisplayFor(modelItem => item.FinancialAccountMember.ApplicationUser.Email)
         </td>
     </tr>
 }
