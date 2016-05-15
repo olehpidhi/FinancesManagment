@@ -44,7 +44,7 @@
 </div>
 
 <div id="result" class="alert alert-info form-group" hidden>
-    <a href="#" class="close" aria-label="close" onclick="$('#result').hide()">&times;</a>
+    <a href="#" class="close" aria-label="close" onclick="$('#result').hide()">x</a>
 </div>
 
 <div class="row">
@@ -110,7 +110,7 @@
 <script type="text/javascript">
     function onRemove(memberId) {
         $.post("@Url.Action("RemoveMember")", { Id: memberId }, function (data) {
-            if (data.success) {
+            if (data.success) { 
                 $("#member_" + memberId).remove();
                 $("#result").addClass("alert-info");
                 $("#result").removeClass("alert-danger");

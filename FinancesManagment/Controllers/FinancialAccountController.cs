@@ -256,6 +256,10 @@ namespace FinancesManagment.Controllers
             if (accountMember.MemberPermissions.Find(p => p.Permission.Title == "Make transaction") != null)
             {
                 var financialAccount = accountMember.FinancialAccount;
+                if (Amount > financialAccount.Summary)
+                {
+                    return Json(new { status = "Failed to make transaction. You cannot withdraw amount bigger than account summary" });
+                }
                 financialAccount.Summary += Amount;
                 var transaction = new Transaction(Amount, Category, accountMember);
                 unitOfWork.TransactionsRepository.Insert(transaction);
