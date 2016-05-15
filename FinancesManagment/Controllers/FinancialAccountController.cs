@@ -116,17 +116,17 @@ namespace FinancesManagment.Controllers
             FinancialAccountMember member = unitOfWork.FinancialAccountMembersRepository.Get(m => m.FinancialAccount.Id == Id && m.ApplicationUser.Id == userId).FirstOrDefault();
             if (member == null)
             {
-                return RedirectToAction("Index", "Home");
+                return Json(new { status = "You don't have permission" });
             }
             if (member.FinancialAccountRole.Title == "Owner")
             {
-                member.FinancialAccount.Name = Name;
-                unitOfWork.FinancialAccountsRepository.Update(member.FinancialAccount);
+                var account = unitOfWork.FinancialAccountsRepository.GetByID(member.FinancialAccount.Id);
+                account.Name = Name;
+                unitOfWork.FinancialAccountsRepository.Update(account);
                 unitOfWork.Save();
-                ViewBag.Message = "Account was saved";
-                return View(member);
+                return Json(new { status = "Name was changed" });
             }
-            return RedirectToAction("Edit", member);
+            return Json(new { status = "Error" });
         }
 
         [HttpPost]
