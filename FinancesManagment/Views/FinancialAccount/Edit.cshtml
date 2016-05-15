@@ -13,44 +13,39 @@
     </div>
 }
 
-@using (Html.BeginForm("Edit", "FinancialAccount", null, FormMethod.Post, new { id = "editform" }))
-{
-    @Html.AntiForgeryToken()
-
-    <div class="container">
-        <div class="jumbotron">
-            <div class="container">
-                @Html.LabelFor(model => model.FinancialAccount.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div>
-                    @Html.EditorFor(model => model.FinancialAccount.Name, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.FinancialAccount.Name, "", new { @class = "text-danger" })
-                </div>
+<div class="container">
+    <div class="jumbotron">
+        <div class="container">
+            <label for="Name" class="control-label col-md-2">Name</label>
+            <div>
+                <input type="text" id="Name" class="form-control" value="@Model.FinancialAccount.Name"/>
             </div>
-
-            <div class="container">
-                @Html.LabelFor(model => model.FinancialAccount.Currency.Code, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div>
-                    @Html.DisplayFor(modelItem => Model.FinancialAccount.Currency.Code, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-            </div>
-
-            <div class="container">
-                @Html.LabelFor(model => model.FinancialAccount.Summary, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div id="summary">
-                    @Html.DisplayFor(modelItem => Model.FinancialAccount.Summary, new { htmlAttributes = new { @class = "form-control" } })
-                </div>
-            </div>
-
-            <div class="btn-group">
-                <button class="btn btn-info" onclick="$('#editform').submit()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button>
-                <a class="btn btn-danger" onclick="deleteAccount(@Model.FinancialAccount.Id)">
-                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                </a>
-            </div>
-
         </div>
+
+        <div class="container">
+            @Html.LabelFor(model => model.FinancialAccount.Currency.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div>
+                @Html.DisplayFor(modelItem => Model.FinancialAccount.Currency.Code, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="container">
+            @Html.LabelFor(model => model.FinancialAccount.Summary, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div id="summary">
+                @Html.DisplayFor(modelItem => Model.FinancialAccount.Summary, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-info" onclick="save()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button>
+            <a class="btn btn-danger" onclick="deleteAccount(@Model.FinancialAccount.Id)">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </a>
+        </div>
+
     </div>
-}
+</div>
+
 
 <div id="result" class="alert alert-info form-group" hidden>
     <a href="#" class="close" aria-label="close" onclick="$('#result').hide()">x</a>
@@ -134,6 +129,15 @@
 </div>
 
 <script type="text/javascript">
+    function save() {
+        $.post("@Url.Action("Edit")", {
+            Id: @Model.FinancialAccount.Id, 
+            Name: $('#Name').val() 
+        }, function (data) {
+            createAlert(data.status);
+        });
+    }
+
     function onRemove(memberId) {
         createConfirm(function () {
             $.post("@Url.Action("RemoveMember")", { Id: memberId }, function (data) {
