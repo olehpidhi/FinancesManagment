@@ -12,11 +12,12 @@ namespace FinancesManagment.Models
         {
             FinancialAccountMembers = new List<FinancialAccountMember>();
         }
+
         public virtual List<FinancialAccountMember> FinancialAccountMembers { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Summary { get; set; }
-        public string Currency { get; set; }
+        public virtual Currency Currency { get; set; }
     }
 }
 

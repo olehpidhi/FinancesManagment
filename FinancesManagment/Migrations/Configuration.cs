@@ -12,7 +12,7 @@ namespace FinancesManagment.Migrations
             AutomaticMigrationsEnabled = true;
             ContextKey = "FinancesManagment.Models.ApplicationDbContext";
             AutomaticMigrationDataLossAllowed = true;
-            
+
         }
 
         protected override void Seed(FinancesManagment.Models.ApplicationDbContext context)
@@ -43,6 +43,13 @@ namespace FinancesManagment.Migrations
                 new Models.Permission { Id = 3, Title = "View statistic" },
                 new Models.Permission { Id = 4, Title = "Add user" }
             );
+            context.Currencies.AddOrUpdate(
+                permission => permission.Id,
+                new Models.Currency { Id = 1, Code = "UAH" },
+                new Models.Currency { Id = 2, Code = "USD" },
+                new Models.Currency { Id = 3, Code = "EUR" }
+            );
+
         }
     }
 }

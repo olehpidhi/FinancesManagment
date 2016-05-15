@@ -47,5 +47,6 @@ namespace FinancesManagment.Models
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<MemberPermission> MemberPermissions { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
     }
 }

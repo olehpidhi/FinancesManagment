@@ -28,18 +28,26 @@
             </div>
 
             <div class="container">
+                @Html.LabelFor(model => model.FinancialAccount.Currency.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div>
+                    @Html.DisplayFor(modelItem => Model.FinancialAccount.Currency.Code, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+
+            <div class="container">
                 @Html.LabelFor(model => model.FinancialAccount.Summary, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div id="summary">
                     @Html.DisplayFor(modelItem => Model.FinancialAccount.Summary, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
             </div>
+
             <div class="btn-group">
                 <button class="btn btn-info" onclick="$('#editform').submit()"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span></button>
-                <a class="btn btn-danger" href="@Url.Action("DeleteAccount", new { Id = Model.FinancialAccount.Id })">
+                <a class="btn btn-danger" onclick="deleteAccount(@Model.FinancialAccount.Id)">
                     <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
                 </a>
-
             </div>
+
         </div>
     </div>
 }
@@ -127,26 +135,52 @@
 
 <script type="text/javascript">
     function onRemove(memberId) {
-        $.post("@Url.Action("RemoveMember")", { Id: memberId }, function (data) {
-            if (data.success) {
-                $("#member_" + memberId).remove();
-                $("#result").addClass("alert-info");
-                $("#result").removeClass("alert-danger");
-                $("#resultInfo").text(data.email + " was successfully removed from the account");
-                $("#result").show();
-            } else {
-                $("#result").addClass("alert-danger");
-                $("#result").removeClass("alert-info");
-                $("#resultInfo").text("Failed to remove " + data.email + " from the account");
-                $("#result").show();
-            }
+        createConfirm(function () {
+            $.post("@Url.Action("RemoveMember")", { Id: memberId }, function (data) {
+                if (data.success) {
+                    $("#member_" + memberId).remove();
+                    createAlert("User removed");
+                } else {
+                    createAlert("Failed to remove user");
+                }
+            });
         });
     }
 
-    function toggleHistory(historyContainer) {
-        var historyState = historyContainer.is(":hidden")
-        historyContainer.slideToggle(historyState)
+    function deleteAccount(account) {
+        createConfirm(function () {
+            $.post("@Url.Action("DeleteAccount")", { Id: account }, function (data) {
+                if (data.success) {
+                    createAlert(data.status, function () { window.location.href = '/'; });
+                } else {
+                    createAlert(data.status);
+                }
+            });
+        });
     }
+
+    function createAlert(text, onConfirm) {
+        $.alert({
+            content: "",
+            title: text,
+            confirm: onConfirm || function () { },
+            confirmButton: 'Ok'
+        });
+    }
+
+    function createConfirm(onConfirm) {
+        $.confirm({
+            content: "",
+            title: "Are you sure?",
+            confirm: onConfirm,
+            cancel: function () {
+            },
+            confirmButton: 'Yes',
+            cancelButton: 'No'
+        });
+    }
+
+
 </script>
 
 @section Scripts {

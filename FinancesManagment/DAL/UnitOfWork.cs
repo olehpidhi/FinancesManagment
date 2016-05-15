@@ -13,6 +13,21 @@ namespace FinancesManagment.DAL
         private GenericRepository<Permission> permissionRepository;
         private GenericRepository<MemberPermission> memberPermissionRepository;
         private GenericRepository<Transaction> transactionRepository;
+        private GenericRepository<Currency> currencyRepository;
+
+
+        public GenericRepository<Currency> CurrencyRepository
+        {
+            get
+            {
+
+                if (this.currencyRepository == null)
+                {
+                    this.currencyRepository = new GenericRepository<Currency>(context);
+                }
+                return currencyRepository;
+            }
+        }
 
         public GenericRepository<ApplicationUser> UserRepository
         {
