@@ -201,7 +201,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="DAL\GenericRepository.cs" />
-    <Compile Include="DAL\Queries.cs" />
     <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -279,6 +278,8 @@
     <Content Include="Views\FinancialAccount\AddUser.cshtml" />
     <Content Include="Views\FinancialAccount\SetQuote.cshtml" />
     <Content Include="Views\FinancialAccount\AccountView.cshtml" />
+    <Content Include="Views\FinancialAccount\Transaction.cshtml" />
+    <Content Include="Views\FinancialAccount\TransactionsHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
