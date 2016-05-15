@@ -1,0 +1,77 @@
+﻿@model FinancesManagment.Models.FinancialAccountMember
+@{
+    ViewBag.Title = "Edit Permissions";
+}
+
+<h2>Edit @Model.ApplicationUser.Email permissions</h2>
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.ActionLink("Back to account", "Edit", new { Id = Model.FinancialAccount.Id }, new { @class = "btn btn-default" })
+        </div>
+    </div>
+</div>
+
+<div id="result" class="alert alert-info form-group" hidden>
+    <a href="#" class="close" aria-label="close" onclick="$('#result').hide()">&times;</a>
+</div>
+
+@if (Model.MemberPermissions.Count > 0)
+{
+    <table class="table">
+        <tr>
+            <th>
+                Permission
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model.MemberPermissions)
+        {
+            <tr id="@item.Id">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Permission.Title)
+                </td>
+                <td>
+                    <div class="btn-group"></div>
+                    <button class="btn btn-danger" onclick="removePermission(@item.Id)">Remove</button>
+                </td>
+            </tr>
+        }
+    </table>
+}
+<div class="form-horizontal">
+    <div class="form-group">
+        <div class="col-md-10">
+            @Html.DropDownList("Permission", new SelectList(FinancesManagment.Models.FinancialAccountMember.Permissions, "Id", "Title"), htmlAttributes: new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <button class="btn btn-primary" onclick="addPermission()">Add permission</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function addPermission() {
+        $.post("@Url.Action("AddPermission")", {Id: @Model.Id, Permission: $('#Permission').val()}, function (data) {
+            alert(data.status);
+            location.reload();
+        });
+    }
+
+    function removePermission(id) {
+        $.post("@Url.Action("RemovePermission")", { Id: id }, function (data) {
+            if (data.success) {
+                $('#' + id).remove();
+                $("#result").addClass("alert-info");
+                $("#result").removeClass("alert-danger");
+            } else {
+                $("#result").addClass("alert-danger");
+                $("#result").removeClass("alert-info");
+            }
+            $("#result").text(data.status);
+            $("#result").show();
+        });
+    }
+</script>

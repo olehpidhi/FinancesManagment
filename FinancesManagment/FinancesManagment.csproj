@@ -280,6 +280,7 @@
     <Content Include="Views\FinancialAccount\AccountView.cshtml" />
     <Content Include="Views\FinancialAccount\Transaction.cshtml" />
     <Content Include="Views\FinancialAccount\TransactionsHistory.cshtml" />
+    <Content Include="Views\FinancialAccount\EditPermissions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
