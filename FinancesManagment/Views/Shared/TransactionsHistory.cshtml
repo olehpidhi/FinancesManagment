@@ -5,7 +5,14 @@
             <th>Transaction Id</th>
             <th>Amount</th>
             <th>Category</th>
+            @if (bool.Parse(ViewData["edit"].ToString()))
+            {
             <th>User</th>
+            }
+            else
+            {
+                <th>Account</th>
+            }
         </tr>
     </thead>
     @foreach (var item in @Model)
@@ -22,7 +29,14 @@
                 @Html.DisplayFor(modelItem => item.Category)
             </td>
             <td>
+            @if (bool.Parse(ViewData["edit"].ToString()))
+            {
                 @Html.DisplayFor(modelItem => item.FinancialAccountMember.ApplicationUser.Email)
+            }
+            else
+            {
+                @Html.DisplayFor(modelItem => item.FinancialAccountMember.FinancialAccount.Name)
+            }
             </td>
         </tr>
     }

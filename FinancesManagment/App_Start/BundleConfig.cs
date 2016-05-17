@@ -22,7 +22,8 @@ namespace FinancesManagment
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js",
-                      "~/Scripts/jquery-confirm.min.js"));
+                      "~/Scripts/jquery-confirm.min.js",
+                      "~/Scripts/myscript.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

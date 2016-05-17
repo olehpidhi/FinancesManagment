@@ -4,14 +4,9 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Financial Account @Html.ActionLink("To accounts list", "Index", "Home", null, new { @class = "btn btn-default" })</h2>
-
-@if (ViewBag.Message != null)
-{
-    <div id="result" class="alert alert-info form-group">
-        @ViewBag.Message
-    </div>
-}
+<h2><a class="btn btn-default" href="@Url.Action("Index", "Home")">
+    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+</a> Financial Account</h2>
 
 <div class="container">
     <div class="jumbotron">
@@ -65,7 +60,7 @@
                 Transactions History
             </div>
             <div class="panel-body">
-                @Html.Partial("TransactionsHistory", Model.Transactions)
+                @Html.Partial("TransactionsHistory", Model.Transactions, new ViewDataDictionary { { "edit", "true" } })
             </div>
         </div>
     </div>
@@ -162,29 +157,6 @@
             });
         });
     }
-
-    function createAlert(text, onConfirm) {
-        $.alert({
-            content: "",
-            title: text,
-            confirm: onConfirm || function () { },
-            confirmButton: 'Ok'
-        });
-    }
-
-    function createConfirm(onConfirm) {
-        $.confirm({
-            content: "",
-            title: "Are you sure?",
-            confirm: onConfirm,
-            cancel: function () {
-            },
-            confirmButton: 'Yes',
-            cancelButton: 'No'
-        });
-    }
-
-
 </script>
 
 @section Scripts {

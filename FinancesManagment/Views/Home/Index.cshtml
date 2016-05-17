@@ -19,11 +19,23 @@
                 @foreach (var item in Model)
                 {
                     string style = (item.FinancialAccountRole.Title == "Owner") ? "list-group-item active" : "list-group-item";
-                    <a class="@style" href="@Url.Action("Edit", "FinancialAccount", new { Id = item.FinancialAccount.Id})"><span class="badge">@Html.DisplayFor(i => item.FinancialAccount.Summary)</span>@Html.DisplayFor(i => item.FinancialAccount.Name)</a>
+                    <a class="@style" href="@Url.Action("Edit", "FinancialAccount", new { Id = item.FinancialAccount.Id })"><span class="badge">@Html.DisplayFor(i => item.FinancialAccount.Summary)</span>@Html.DisplayFor(i => item.FinancialAccount.Name)</a>
                 }
             </div>
         </div>
-    </div>
+        <div class="col-md-4"></div>
+            <div class="col-md-4">
+                @{
+                    var transactions = new List<FinancesManagment.Models.Transaction>();
+                    foreach (var item in Model)
+                    {
+                        transactions.AddRange(item.Transactions);
+                    }
+
+                }
+                @Html.Partial("TransactionsHistory", transactions, new ViewDataDictionary { { "edit", "false" } })
+            </div>
+        </div>
 }
 else
 {
