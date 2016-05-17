@@ -246,6 +246,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\myscript.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
@@ -284,7 +285,7 @@
     <Content Include="Views\FinancialAccount\SetQuote.cshtml" />
     <Content Include="Views\FinancialAccount\AccountView.cshtml" />
     <Content Include="Views\FinancialAccount\Transaction.cshtml" />
-    <Content Include="Views\FinancialAccount\TransactionsHistory.cshtml" />
+    <Content Include="Views\Shared\TransactionsHistory.cshtml" />
     <Content Include="Views\FinancialAccount\EditPermissions.cshtml" />
   </ItemGroup>
   <ItemGroup />

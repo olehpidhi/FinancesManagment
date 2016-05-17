@@ -3,18 +3,9 @@
     ViewBag.Title = "Edit Permissions";
 }
 
-<h2>Edit @Model.ApplicationUser.Email permissions</h2>
-<div class="form-horizontal">
-    <div class="form-group">
-        <div class="col-md-10">
-            @Html.ActionLink("Back to account", "Edit", new { Id = Model.FinancialAccount.Id }, new { @class = "btn btn-default" })
-        </div>
-    </div>
-</div>
-
-<div id="result" class="alert alert-info form-group" hidden>
-    <a href="#" class="close" aria-label="close" onclick="$('#result').hide()">&times;</a>
-</div>
+<h2><a class="btn btn-default" href="@Url.Action("Edit", "FinancialAccount", new { Id = Model.FinancialAccount.Id })">
+    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+</a> Edit @Model.ApplicationUser.Email permissions</h2>
 
 @if (Model.MemberPermissions.Count > 0)
 {
@@ -55,23 +46,39 @@
 <script type="text/javascript">
     function addPermission() {
         $.post("@Url.Action("AddPermission")", {Id: @Model.Id, Permission: $('#Permission').val()}, function (data) {
-            alert(data.status);
-            location.reload();
+            createAlert(data.status, function () { location.reload(); });
         });
     }
 
     function removePermission(id) {
-        $.post("@Url.Action("RemovePermission")", { Id: id }, function (data) {
-            if (data.success) {
-                $('#' + id).remove();
-                $("#result").addClass("alert-info");
-                $("#result").removeClass("alert-danger");
-            } else {
-                $("#result").addClass("alert-danger");
-                $("#result").removeClass("alert-info");
-            }
-            $("#result").text(data.status);
-            $("#result").show();
+        createConfirm(function() {
+            $.post("@Url.Action("RemovePermission")", { Id: id }, function (data) {
+                if (data.success) {
+                    $('#' + id).remove();
+                }
+                createAlert(data.status);
+            });
         });
     }
+
+   /* function createConfirm(onConfirm) {
+        $.confirm({
+            content: "",
+            title: "Are you sure?",
+            confirm: onConfirm,
+            cancel: function () {
+            },
+            confirmButton: 'Yes',
+            cancelButton: 'No'
+        });
+    }
+
+    function createAlert(text, onConfirm) {
+        $.alert({
+            content: "",
+            title: text,
+            confirm: onConfirm || function () { },
+            confirmButton: 'Ok'
+        });
+    }*/
 </script>

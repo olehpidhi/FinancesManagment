@@ -17,22 +17,43 @@
 </div>
 
 <script type="text/javascript">
+    /*function createAlert(text, onConfirm) {
+        $.alert({
+            content: "",
+            title: text,
+            confirm: onConfirm || function () { },
+            confirmButton: 'Ok'
+        });
+    }
+
+    function createConfirm(onConfirm) {
+        $.confirm({
+            content: "",
+            title: "Are you sure?",
+            confirm: onConfirm,
+            cancel: function () {
+            },
+            confirmButton: 'Yes',
+            cancelButton: 'No'
+        });
+    }*/
+
     function makeTransaction() {
         var data = {
             Id: @Model.Id,
             Amount: $("#Amount").val(),
-            //Currency: $("#Currency"),
             Category: $("#Category").val()
-        }
-        console.log(data)
+        };
+        console.log(data);
 
 
         $.post("@Url.Action("MakeTransaction")", data, function (data) {
-            $("#resultInfo").text(data.status);
-            $("#result").show();
+            createAlert(data.status);
             if (data.summary) {
                 $("#summary").text(data.summary);
             }
+        }).fail(function() {
+            createAlert("Failed to make transaction");
         });
     }
 </script>

@@ -286,11 +286,12 @@ namespace FinancesManagment.Controllers
         [HttpPost]
         public ActionResult MakeTransaction(int Id, decimal Amount, string Category)
         {
+            
             var accountMember = unitOfWork.FinancialAccountMembersRepository.GetByID(Id);
             if (accountMember.MemberPermissions.Find(p => p.Permission.Title == "Make transaction") != null)
             {
                 var financialAccount = accountMember.FinancialAccount;
-                if (financialAccount.Summary + Amount < 0)
+                if (financialAccount.Summary + Amount < 0 && accountMember.FinancialAccountRole.Title != "Owner")
                 {
                     return Json(new { status = "Failed to make transaction. You cannot withdraw amount bigger than account summary" });
                 }

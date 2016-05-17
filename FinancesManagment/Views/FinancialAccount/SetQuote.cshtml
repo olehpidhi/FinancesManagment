@@ -40,4 +40,6 @@
     </div>
 }
 
-@Html.ActionLink("Back", "Edit", new { Id = Model.FinancialAccount.Id }, new { @class = "btn btn-default" })
+<a class="btn btn-default" href="@Url.Action("Edit", "FinancialAccount", new { Id = Model.FinancialAccount.Id })">
+    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+</a>
