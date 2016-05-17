@@ -24,12 +24,17 @@
 @if (Model.MemberPermissions.Find(p => p.Permission.Title == "Make transaction") != null)
 {
     <div class="row">
-        @Html.Partial("Transaction", Model)
+        <div class="mod-xs-12">
+            @Html.Partial("Transaction", Model)
+        </div>
+    </div>
+}
+@if (Model.MemberPermissions.Find(p => p.Permission.Title == "View statistic") != null)
+{
+    <div class="row">
+        <div class="mod-xs-12">
+            @Html.Partial("TransactionsHistory", Model.Transactions)
+        </div>
     </div>
 }
 <br />
-
-<div id="result" class="alert alert-info form-group" hidden>
-    <a href="#" class="close" aria-label="close" onclick="$('#result').hide()">&times;</a>
-</div>
-
