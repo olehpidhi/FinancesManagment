@@ -291,7 +291,11 @@ namespace FinancesManagment.Controllers
             if (accountMember.MemberPermissions.Find(p => p.Permission.Title == "Make transaction") != null)
             {
                 var financialAccount = accountMember.FinancialAccount;
-                if (financialAccount.Summary + Amount < 0 && accountMember.FinancialAccountRole.Title != "Owner")
+                if (accountMember.Quote + Amount < 0 && accountMember.FinancialAccountRole.Title != "Owner")
+                {
+                    return Json(new { status = "Failed to make transaction. You reached your maximum of account quote." });
+                }
+                if (financialAccount.Summary + Amount < 0)
                 {
                     return Json(new { status = "Failed to make transaction. You cannot withdraw amount bigger than account summary" });
                 }
