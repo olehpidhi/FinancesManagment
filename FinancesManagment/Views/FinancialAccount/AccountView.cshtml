@@ -9,14 +9,23 @@
     <div class="form-group">
         @Html.LabelFor(model => model.FinancialAccount.Name, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DisplayFor(model => model.FinancialAccount.Name, new { htmlAttributes = new { @class = "form-control" } })
+            <p class="form-control-static">@Model.FinancialAccount.Name</p>
         </div>
     </div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.FinancialAccount.Summary, htmlAttributes: new { @class = "control-label col-md-2" })
         <div id="summary" class="col-md-10">
-            @Html.DisplayFor(modelItem => Model.FinancialAccount.Summary, new { htmlAttributes = new { @class = "form-control"} })
+            <p class="form-control-static">@Model.FinancialAccount.Summary</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="owner" class="control-label col-md-2">Owner</label>
+        @{
+            var owner = Model.FinancialAccount.FinancialAccountMembers.Find(m => m.FinancialAccountRole.Title == "Owner");
+        }
+        <div class="col-md-10">
+            <p class="form-control-static">@owner.ApplicationUser.Email</p>
         </div>
     </div>
 </div>
@@ -33,7 +42,7 @@
 {
     <div class="row">
         <div class="mod-xs-12">
-            @Html.Partial("TransactionsHistory", Model.Transactions)
+            @Html.Partial("TransactionsHistory", Model.Transactions, new ViewDataDictionary { { "edit", "true" } })
         </div>
     </div>
 }

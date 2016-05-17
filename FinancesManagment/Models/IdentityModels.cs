@@ -12,7 +12,7 @@ namespace FinancesManagment.Models
     public class ApplicationUser : IdentityUser
     {
 
-        public ApplicationUser()
+        public ApplicationUser(): base()
         {
             FinancialAccountMembers = new List<FinancialAccountMember>();
         }
